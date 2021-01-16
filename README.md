@@ -7,6 +7,8 @@ $ npm install
 
 $ npm install firebase --save
 
+$ npm install vue-chartkick chart.js
+
 # serve with hot reload at localhost:3000
 $ npm run dev
 
