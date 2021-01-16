@@ -6,6 +6,9 @@
                 <label>Name</label>
                 <input type="text" autoFocus required placeholder="Enter Name" v-model="name"/>
 
+                <label>Email</label>
+                <input type="text" autoFocus required placeholder="Enter Email Address" v-model="email"/>
+
                 <label>Address</label>
                 <input type="text" autoFocus required placeholder="Enter Address" v-model="address"/>
 
@@ -34,12 +37,39 @@
                     <option value="50,000 above">50,000 above</option>
                 </select>
 
+                <label>Barangay</label>
+                <select v-model="barangay">
+                    <option value="Acacia">Acacia</option>
+                    <option value="San Dionisio">San Dionisio</option>
+                    <option value="793">793</option>
+                    <option value="Balut">Balut</option>
+                </select>
+
+                <label>Household Members</label>
+                <div class='list'>
+                <input type="text" autoFocus required placeholder="Enter Member" v-model="member_model"/>
+                <button @click="addList">V</button>
+                </div>
+
+                <client-only>
+                <table style="width:100%">
+                      <tr>
+                      <th>Name</th>
+                      <th>Remove</th>
+                      </tr>
+                      <tr v-for="(member,index) in members" :key="index" class="displayList">
+                      <td>{{member}}</td>
+                      <td><a @click="removeIndex(member)" class="hypeLink">Remove</a></td>
+                      </tr>
+                </table>
+                </client-only>
+
                 <label>Please Submit a valid id</label>
                 <input type="file" id="myFile" name="filename" @change="processFile($event)" accept=".jpg,.jpeg" />
                 
 
                 <div class="btnContainer">
-                   <button @click="uploadFile">Register</button>
+                   <button @click="uploadFile" v-if="file != null">Register</button>
                 </div>
             </div>
 
@@ -49,6 +79,7 @@
 <script>
 
 import firebase from 'firebase/app'
+import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
@@ -62,28 +93,41 @@ export default {
 
          uploadFile(){
             let file = this.file
-                var storageRef = firebase.storage().ref('Valid Id/' + file.name);
+                var storageRef = firebase.storage().ref('Valid Id/' + this.email +'/' + file.name);
                 let uploadTask = storageRef.put(file)
                 
                 uploadTask.on('state_changed', (snapshot) =>{
                 }, (error) =>{
+                  console.log(error)
                 }, () =>{
+                  console.log("umabot dito") 
                     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
                         console.log('File available at', downloadURL);
-                        this.image = downloadURL  
+                        this.image = downloadURL
+                        console.log("nagpunta dito")  
 
                         firebase.firestore().collection("user").add({
                             name: this.name,
-                            address:this.name,
+                            address:this.address,
                             age:this.age,
                             sex:this.sex,
                             role:this.role,
                             income:this.income,
-                            image:this.image
-                            
+                            image:this.image,
+                            barangay: this.barangay,
+                            household:this.members,
+                            email:this.email,
+                            status: 'pending',
                         })
-                        .then(function(docRef) {
+                        .then((docRef) => {
+                            alert('Thank you for Registering! We will now review your identification!');
+                            
                             console.log("Document written with ID: ", docRef.id);
+                            firebase.auth().signOut().then(() => {
+                             this.$router.push('/');
+                            }).catch((error) => {
+                              // An error happened.
+                            });
                         })
                         .catch(function(error) {
                             console.error("Error adding document: ", error);
@@ -92,7 +136,16 @@ export default {
                      });
                 });
       
-    },
+        },
+
+        addList(){
+          this.members = [...this.members, this.member_model];
+          this.member_model = '';
+        },
+
+        removeIndex(member){
+          this.members = this.members.filter(del => del !== member);
+        }
 
         
     },
@@ -106,8 +159,13 @@ export default {
         role:'',
         income:'',
         image:'',
+        barangay:'',
+        email:'',
 
-        file: null
+        file: null,
+
+        members:[],
+        member_model:'',
       
     };
     },
@@ -115,7 +173,7 @@ export default {
 
 </script>
 
-<style>
+<style scope>
 * {
   box-sizing: border-box;
   margin: 0;
@@ -235,5 +293,31 @@ white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.list{
+  display: flex;
+  flex-direction: row;
+}
+.list button{
+  max-width: 15%;
+}
+
+/* Tables */
+
+table{
+  color:whitesmoke;
+}
+
+.hypeLink{
+  text-decoration: underline;
+  color: white;
+}
+
+.hypeLink:hover{
+  font-weight: bolder;
+  color:whitesmoke;
+  cursor: pointer;
+}
+
 
 </style>

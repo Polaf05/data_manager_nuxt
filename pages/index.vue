@@ -6,19 +6,32 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
             <nuxt-link to="/login" class="m-1"><b-button variant="light">Login</b-button></nuxt-link>
-            <nuxt-link to="/signup" class="m-1"><b-button variant="light">Signup</b-button></nuxt-link>
+            <b-button variant="light" @click="signin">Signup</b-button>
       </b-navbar-nav>
   </b-navbar>
 </div>
 </template>
 
 <script>
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+import 'firebase/storage'
+
 export default {
+
+  methods: {
+    signin(){
+    firebase.auth().signInWithEmailAndPassword('anonymous@upload.com', 'admin123').then((user) => {
+              this.$router.push('/signup');
+            })
+    }
+  },
 
 }
 </script>
 
-<style>
+<style scope>
 .container {
   margin: 0 auto;
   min-height: 100vh;

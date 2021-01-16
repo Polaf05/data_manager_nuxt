@@ -3,6 +3,15 @@
             <div class="loginContainer">
                 <h1>Data Manager</h1> 
                 
+                <label v-if="flag">Barangay</label>
+                <select v-model="barangay" v-if="flag">
+                    <option value="Acacia">Acacia</option>
+                    <option value="San Dionisio">San Dionisio</option>
+                    <option value="793">793</option>
+                    <option value="Balut">Balut</option>
+                </select>
+                
+
                 <label>Email</label>
                 <input type="text" autoFocus required placeholder="Enter Email Address" v-model="email"/>
 
@@ -30,6 +39,7 @@
 <script>
 import firebase from 'firebase/app'
 import "firebase/auth"
+import "firebase/firestore"
 
 export default {
     methods:{
@@ -44,6 +54,18 @@ export default {
     signup() {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => 
       {
+          firebase.firestore().collection("admin").add({
+                barangay: this.barangay,
+                email: this.email,
+                
+            })
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+
           alert("Thank you for signing up");
           console.log(user);
           firebase
@@ -70,7 +92,9 @@ export default {
 
     login() {
             firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((user) => {
-            alert("NICE")
+
+              this.$router.push('/admin');
+
             }).catch(function(error) {
                 // Handle Errors here.
                 var errorCode = error.code;
@@ -100,13 +124,14 @@ export default {
       email: "",
       password: "",
       flag:false,
+      barangay:'',
       
     };
   },
 }
 </script>
 
-<style>
+<style scope>
 * {
   box-sizing: border-box;
   margin: 0;
