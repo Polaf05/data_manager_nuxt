@@ -1,8 +1,9 @@
 <template>
      <section class="login">
             <div class="loginContainer">
+
                 <h1>Data Manager</h1> 
-                
+              <div v-if="!adminPrive">  
                 <label v-if="flag">Barangay</label>
                 <select v-model="barangay" v-if="flag">
                     <option value="Acacia">Acacia</option>
@@ -19,18 +20,28 @@
                 <input type="password" autoFocus required placeholder="Enter Password" v-model="password"/>
 
                 <div class="btnContainer">
-                   <button v-if="!flag" @click="login">Login</button>
-                   <button v-if="flag" @click="signup">Register</button>
+                   <button v-if="!flag" @click="login">Log In</button>
+                    <button v-if="flag" @click="signup">Register</button>
 
-                   <p v-if="!flag">
-                       Don't have an account?
-                            <span v-on:click="flag = true" >Sign Up</span>
-                    </p>
+                </div>
+              </div>
+                <div v-if="codeFlag">
+                  <div>
+                      <input type="password" autoFocus required placeholder="Enter Admin Code" style="text-align:center" v-model="code"/>
+                      <button style="margin-top: 1rem" @click="submitCode">Submit</button>
+                  </div>
+                </div>
 
-                    <p v-if="flag">
-                       Have an account?
-                            <span v-on:click="flag = false"  >Sign In</span>
-                    </p>
+                <div class="btnContainer">
+                  <p v-if="!adminPrive">
+                        Don't have an account?
+                              <span v-on:click="adminPrive = true, codeFlag = true" >Sign Up </span>
+                  </p>
+
+                  <p v-if="adminPrive">
+                        Have an account?
+                              <span v-on:click="adminPrive = false,  codeFlag = false"  >Sign In </span>
+                  </p>
                 </div>
             </div>
         </section>
@@ -51,12 +62,22 @@ export default {
       });
     },
 
+    submitCode(){
+      if(this.code == "chulsan123"){
+        this.flag=true;
+        this.adminPrive=false;
+        this.code = '';
+        this.codeFlag=false;
+      }
+    },
+
     signup() {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((user) => 
       {
           firebase.firestore().collection("admin").add({
                 barangay: this.barangay,
                 email: this.email,
+                population:0,
                 
             })
             .then(function(docRef) {
@@ -125,6 +146,9 @@ export default {
       password: "",
       flag:false,
       barangay:'',
+      adminPrive:false,
+      code:'',
+      codeFlag:false,
       
     };
   },
@@ -154,13 +178,12 @@ button {
 .login {
   width: 100%;
   min-height: 100vh;
-  padding: 0 20px;
   background: #e9e9e9;
   display: flex;
 }
 
 .login .loginContainer {
-  padding: 60px;
+  padding: 30px;
   margin: auto;
   width: 100%;
   max-width: 520px;
@@ -175,6 +198,7 @@ button {
     rgba(17, 27, 75, 0.9) 100%
   );
   box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.8);
+  margin-top: 50px;
 }
 
 .login .loginContainer h1{
@@ -184,13 +208,14 @@ button {
   justify-content: center;
   font-size: 33px;
   line-height: 1;
+  margin-top: 0px;
 }
 
-.login .loginContainer label {
+.login .loginContainer div label {
   color: white;
   margin: 14px 0;
   display: block;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
 }
 
@@ -215,14 +240,24 @@ button {
   text-align: right;
   color: #fff;
 }
+.btnContainer p{
+ 
+  text-align: center;
+}
 
-.login .loginContainer .btnContainer p span {
-  color: yellow;
+.login .loginContainer .btnContainer p {
   font-weight: 500;
-  letter-spacing: 0.5px;
   margin-left: 5px;
   cursor: pointer;
-  transition: all 400ms ease-in-out;
+  text-align: center;
+}
+.login .loginContainer .btnContainer span {
+  color: yellow;
+  font-weight: 500;
+  margin-left: 5px;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
 }
 
 .login .loginContainer .btnContainer p span:hover {
@@ -232,6 +267,16 @@ button {
 .login .loginContainer .errorMsg {
   color: red;
   font-size: 16px;
+}
+.login .loginContainer div select{
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 19px;
+  padding: 10px;
+  background: rgba(24, 2, 29, 0.4);
+  color:#fff;
+  letter-spacing: 1px;
 }
 
 </style>

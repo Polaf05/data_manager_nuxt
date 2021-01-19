@@ -38,14 +38,6 @@
                     <option value="50,000 above">50,000 above</option>
                 </select>
 
-                <label>Barangay</label>
-                <select v-model="barangay">
-                    <option value="Acacia">Acacia</option>
-                    <option value="San Dionisio">San Dionisio</option>
-                    <option value="793">793</option>
-                    <option value="Balut">Balut</option>
-                </select>
-
                 <div class= 'border'>
                 <label>Household Members</label>
                 
@@ -93,12 +85,8 @@
                     
                 </div>
 
-                <label>Please Submit a valid id</label>
-                <input type="file" id="myFile" name="filename" @change="processFile($event)" accept=".jpg,.jpeg" />
-                
-
                 <div class="btnContainer">
-                   <button @click="uploadFile" v-if="file != null">Register</button>
+                   <button @click="uploadFile">Register</button>
                 </div>
             </div>
 
@@ -113,6 +101,20 @@ import 'firebase/firestore'
 import 'firebase/storage'
 
 export default {
+
+    props:['admin'],
+
+    mounted() {
+        
+        firebase.firestore().collection("admin").where("email","==",this.admin).get().then((snapshot) => {
+            snapshot.docs.forEach((docs) => {
+                this.barangay = docs.data().barangay;
+                this.barangay_id = docs.id;
+            
+                });
+        });
+    },
+
     methods:{
 
         processFile(event) {
@@ -121,32 +123,19 @@ export default {
         },
 
          uploadFile(){
-            let file = this.file
-                var storageRef = firebase.storage().ref('Valid Id/' + this.email +'/' + file.name);
-                let uploadTask = storageRef.put(file)
-                
-                uploadTask.on('state_changed', (snapshot) =>{
-                }, (error) =>{
-                  console.log(error)
-                }, () =>{
-                  console.log("umabot dito") 
-                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                        console.log('File available at', downloadURL);
-                        this.image = downloadURL
-                        console.log("nagpunta dito")  
 
-                        firebase.firestore().collection("user").add({
+            firebase.firestore().collection("user").add({
                             name: this.name,
                             address:this.address,
                             age:this.age,
                             sex:this.sex,
                             employment:this.employment,
                             income:this.income,
-                            image:this.image,
+                            image:'approved',
                             barangay: this.barangay,
                       
                             email:this.email,
-                            status: 'pending',
+                            status: 'approved',
                         })
                         .then((docRef) => {
 
@@ -177,7 +166,7 @@ export default {
                             image: "Is only a member",
                             barangay: this.barangay,
                             email:this.email,
-                            status: 'pending',
+                            status: 'approved',
                         })
                             firebase.firestore().collection("admin").doc(this.barangay_id).update({
                               population: firebase.firestore.FieldValue.increment(1)
@@ -189,21 +178,16 @@ export default {
                             });
                          })
 
-                            alert('Thank you for Registering! We will now review your identification!');
+                            alert("User Registerd");
                             
                             console.log("Document written with ID: ", docRef.id);
-                            firebase.auth().signOut().then(() => {
-                             this.$router.push('/');
-                            }).catch((error) => {
-                              // An error happened.
-                            });
+
                         })
                         .catch(function(error) {
                             console.error("Error adding document: ", error);
                         });
                                             
-                     });
-                });
+
       
         },
 
@@ -238,15 +222,11 @@ export default {
         address:'',
         age:0,
         sex:'',
+        email:'',
         employment:'',
         income:'',
-        image:'',
         barangay:'',
-        email:'',
         barangay_id:'',
-        
-
-        file: null,
 
         //Household memeber data
         members:[],

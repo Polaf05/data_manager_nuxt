@@ -65,18 +65,38 @@ export default {
                 id = docs.id
                 this.user[index].status = status
                 firebase.firestore().collection("user").doc(id).update({
-        status: status
-      }).then(function() {
-      console.log("Document successfully updated!");
-      
-      })
-      .catch(function(error) {
-          console.error("Error updating document: ", error);
-      });
-            })
-        }).catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
+                    status: status
+                }).then(function() {
+                console.log("Document successfully updated!");
+                
+                })
+                .catch(function(error) {
+                    console.error("Error updating document: ", error);
+                });
+
+                firebase.firestore().collection('members').where("email","==",email).get().then(snapshot => {
+                    snapshot.docs.forEach(docs => {
+                        id = docs.id
+                        this.user[index].status = status
+                        firebase.firestore().collection("members").doc(id).update({
+                        status: status
+                    }).then(function() {
+                    console.log("Document successfully updated!");
+                    
+                    })
+                    .catch(function(error) {
+                        console.error("Error updating document: ", error);
+                    });
+                            })
+                        }).catch(function(error) {
+                        console.log("Error getting documents: ", error);
+                    });
+
+
+                    })
+                }).catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
       
     }
 

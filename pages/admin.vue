@@ -1,6 +1,6 @@
 <template>
-    <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <div class="background">
+    <b-navbar sticky toggleable="lg" type="dark" variant="dark">
         <b-navbar-brand href="/admin">Resident Data Manager</b-navbar-brand>
         
         <b-navbar-nav class="ml-auto">
@@ -9,15 +9,18 @@
     </b-navbar>
     
     <div class="sidebar">
-    <a href="#db" @click="tab = 0">Dashboard</a>
-    <a href="#tb" @click="tab = 1">List of residents</a>
-    <a href="#rev" @click="tab = 2">Review Resident</a>
-    <a href="#add" @click="tab = 3">Add Resident</a>
+    <a href="#db" @click="tab = 1">Dashboard</a>
+    <a href="#tb" @click="tab = 2">List of residents</a>
+    <a href="#rev" @click="tab = 3">Review Resident</a>
+    <a href="#add" @click="tab = 4">Add Resident</a>
     </div>
     <div class="content">
-      <Dashb v-if="tab == 0" v-bind:email = "email" />
-      <TableList v-if="tab == 1" v-bind:email = "email" />
-      <Review v-if="tab == 2" v-bind:email = "email" />
+      <div v-if="tab == 0"><h1>WELCOME!!</h1></div>
+      
+      <Dashb v-if="tab == 1" v-bind:email = "email" />
+      <TableList v-if="tab == 2" v-bind:email = "email" />
+      <Review v-if="tab == 3" v-bind:email = "email" />
+      <Add v-if="tab == 4" v-bind:admin = "email"/>
     </div>
 
 </div>
@@ -30,12 +33,14 @@ import "firebase/firestore"
 import TableList from './table'
 import Review from './review'
 import Dashb from './dashStats'
+import Add from './addsignup'
 
 export default {
   components:{
     TableList,
     Review,
-    Dashb
+    Dashb,
+    Add
   },
   mounted(){
     firebase.auth().onAuthStateChanged((user) => {
@@ -47,9 +52,11 @@ export default {
 
   methods:{
     signout(){
-    firebase.auth().signInWithEmailAndPassword('anonymous@upload.com', 'admin123').then((user) => {
+    firebase.auth().signOut().then(() => {
               this.$router.push('/');
-            })
+            }).catch((error) => {
+              // An error happened.
+        });
     }
   },
 
@@ -66,16 +73,18 @@ export default {
 </script>
 
 <style scope>
-
+.background{
+ background-color: rgb(211,211,211); 
+}
 /* The side navigation menu */
 .sidebar {
   margin: 0;
   padding: 0;
   width: 20%;
-  background-color: #f1f1f1;
   position: fixed;
   height: 100%;
   overflow: auto;
+   background-color: #f1f1f1;
 }
 
 /* Sidebar links */
@@ -84,6 +93,8 @@ export default {
   color: black;
   padding: 16px;
   text-decoration: none;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 /* Active/current link */
@@ -100,8 +111,11 @@ export default {
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.content {
-  margin-left: 20%;
-  width: 80%;
+  margin-top: 20px;
+  margin-left: 22%;
+  margin-right: 15%;
+  width: 75%;
+  
 }
 
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
@@ -120,6 +134,7 @@ div.content {
   .sidebar a {
     text-align: center;
     float: none;
+   
   }
 }
 

@@ -1,20 +1,23 @@
 <template>
+    <div class="background">
     <div>
-        <div>
-        <label>Representatives per Family</label>
-            <column-chart :data="[['Head of the family', head], ['Support', support] , ['Breadwinner', breadwinner], ['Others', others]]"></column-chart>
-        </div>
-
-        <div>
-        <label>Average Monthly Income</label>
+        <label> AVERAGE MONTHLY INCOME </label>
             <pie-chart :data="[['Below 15,000', below15], ['15,000 - 30,000', between1530] , ['30,000 - 50,000', between3050], ['Above 50,000', above50]]"></pie-chart>
-        </div>
-
-
-
-
-    
     </div>
+
+    <div>
+        <label> Employment Status </label>
+            <column-chart :data="[['Senior', senior], ['Student', student] , ['Employed', employed], ['Unemployed', unemployed]]"></column-chart>
+    </div>
+
+    <div>
+        <label> Sex Population </label>
+            <pie-chart :data="[['Male', male], ['Female', female]]"></pie-chart>
+    </div>
+
+
+    </div>   
+
 </template>
 
 <script>
@@ -38,20 +41,6 @@ export default {
 
                         if(docs.data().status == 'approved'){
                         this.user = [...this.user, docs.data()];
-                         switch(docs.data().role){
-                                    case 'Head of the family':
-                                        this.head++;
-                                    break;
-                                    case 'Nurture and Support':
-                                        this.support++;
-                                    break;
-                                    case 'Breadwinner':
-                                        this.breadwinner++;
-                                    break;
-                                    case 'Others':
-                                        this.others++;
-                                    break;
-                            }
                         
                          switch(docs.data().income){
                                     case 'Below 15,000':
@@ -66,6 +55,64 @@ export default {
                                     case '50,000 above':
                                         this.above50++;
                                     break;
+                            }
+                          switch(docs.data().employment){
+                                    case 'Senior':
+                                        this.senior++;
+                                    break;
+                                    case 'Student':
+                                        this.student++;
+                                    break;
+                                    case 'Unemployed':
+                                        this.unemployed++;
+                                    break;
+                                    case 'Employed':
+                                        this.employed++;
+                                    break;
+                            }
+                        switch(docs.data().sex){
+                                    case 'Male':
+                                        this.male++;
+                                    break;
+                                    case 'Female':
+                                        this.female++;
+                                    break;
+                                    
+                            }
+                                            
+                        }
+  
+                    });
+                });
+
+                firebase.firestore().collection("members").where("barangay","==",this.barangay).get().then((snapshot) => {
+                    snapshot.docs.forEach((docs) => {
+
+                        if(docs.data().status == 'approved'){
+                        
+                          switch(docs.data().employment){
+                                    case 'Senior':
+                                        this.senior++;
+                                    break;
+                                    case 'Student':
+                                        this.student++;
+                                    break;
+                                    case 'Unemployed':
+                                        this.unemployed++;
+                                    break;
+                                    case 'Employed':
+                                        this.employed++;
+                                    break;
+                            }
+
+                        switch(docs.data().sex){
+                                    case 'Male':
+                                        this.male++;
+                                    break;
+                                    case 'Female':
+                                        this.female++;
+                                    break;
+                                    
                             }
                                             
                         }
@@ -90,15 +137,17 @@ export default {
     data() {
 
         return {
-        breadwinner:0,
-        head:0,
-        support:0,
-        others:0,
+        senior:0,
+        student:0,
+        employed:0,
+        unemployed:0,
         below15:0,
         between1530:0,
         between3050:0,
         above50:0,
         barangay:'',
+        male:0,
+        female:0,
         user: [],
 
         };
@@ -110,5 +159,14 @@ export default {
 
 <style scope>
 
+.background{
+   background-color: rgb(211,211,211); 
+   min-height: 100vh;
 
+}
+.background label{
+    font-weight: bold;
+    font-size: 25px;
+    margin-top:10px;
+}
 </style>
