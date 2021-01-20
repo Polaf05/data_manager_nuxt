@@ -6,12 +6,12 @@
               <div v-if="!adminPrive">  
                 <label v-if="flag">Barangay</label>
                 <select v-model="barangay" v-if="flag">
-                    <option value="Acacia">Acacia</option>
-                    <option value="San Dionisio">San Dionisio</option>
-                    <option value="793">793</option>
-                    <option value="Balut">Balut</option>
+                    <option value="brgy 101">brgy 101</option>
+                    <option value="brgy 102">brgy 102</option>
+                    <option value="brgy 103">brgy 103</option>
+                    <option value="brgy 104">brgy 104</option>
+                    <option value="brgy 105">brgy 105</option>
                 </select>
-                
 
                 <label>Email</label>
                 <input type="text" autoFocus required placeholder="Enter Email Address" v-model="email"/>
