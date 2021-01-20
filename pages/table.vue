@@ -1,15 +1,16 @@
 <template>
     <div>
-        <select v-model="select_model">
-            <option value="Family">Family Representative</option>
-            <option value="Senior">Senior</option>
-            <option value="Student">Student</option>
-            <option value="Employed">Employed</option>
-            <option value="Unemployed">Unemployed</option>
+        <span> Filter by: </span> <br/>
+        <select  class= "select" v-model="select_model">
+            <option value="Family">FAMILY REPRESENTATIVES</option>
+            <option value="Senior">SENIORS</option>
+            <option value="Student">STUDENT</option>
+            <option value="Employed">EMPLOYED</option>
+            <option value="Unemployed">UNEMPLOYED</option>
             <option value="All">All</option>
         </select>
         <div v-if="select_model == 'Family'">
-            <h2 align="center">Family Representative</h2>
+            <h2 align="center">FAMILY REPRESENTATIVES</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -31,7 +32,7 @@
         </div>
 
         <div v-if="select_model == 'Unemployed'">
-            <h2 align="center">Unemployed</h2>
+            <h2 align="center">UNEMPLOYED</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -53,7 +54,7 @@
         </div>
 
         <div v-if="select_model == 'Employed'">
-           <h2 align="center">Employed</h2>
+           <h2 align="center">EMPLOYED</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -75,7 +76,7 @@
         </div>
 
         <div v-if="select_model == 'Senior'">
-            <h2 align="center">Senior</h2>
+            <h2 align="center">SENIORS</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -98,7 +99,7 @@
 
         
         <div v-if="select_model == 'Student'">
-            <h2 align="center">Students</h2>
+            <h2 align="center">STUDENTS</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -120,7 +121,7 @@
         </div>
 
         <div v-if="select_model == 'All'">
-            <h2 align="center">Students</h2>
+            <h2 align="center">ALL</h2>
             <table style="width:100%">
                     <tr>
                     <th>Name</th>
@@ -232,6 +233,13 @@ th {
   text-align: left;
   background-color: #3d3f3f;
   color: white;
+}
+.select{
+   background-color: #35495e;
+   color: white;
+   padding: 5px;
+   width: 250px;
+   height: 50px;
 }
 
 </style>

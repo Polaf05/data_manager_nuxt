@@ -6,12 +6,12 @@
     </div>
 
     <div>
-        <label> Employment Status </label>
+        <label> EMPLOYMENT STATUS </label>
             <column-chart :data="[['Senior', senior], ['Student', student] , ['Employed', employed], ['Unemployed', unemployed]]"></column-chart>
     </div>
 
     <div>
-        <label> Sex Population </label>
+        <label>SEX RATIO</label>
             <pie-chart :data="[['Male', male], ['Female', female]]"></pie-chart>
     </div>
 
@@ -162,11 +162,14 @@ export default {
 .background{
    background-color: rgb(211,211,211); 
    min-height: 100vh;
+   
+  
 
 }
 .background label{
     font-weight: bold;
     font-size: 25px;
     margin-top:10px;
+   
 }
 </style>

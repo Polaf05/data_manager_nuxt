@@ -1,6 +1,7 @@
 <template>
     <section class="login">
             <div class="loginContainer">
+              <form v-on:submit.prevent="uploadFile">
                 <h1>Online Barangay Registration</h1> 
                 
                 <label>Name</label>
@@ -41,10 +42,10 @@
                 <div class= 'border'>
                 <label>Household Members</label>
                 
-                    <input type="text" autoFocus required placeholder="Enter Member" v-model="member_model"/>
+                    <input type="text" autoFocus placeholder="Enter Member" v-model="member_model"/>
                     
                     <label>Age</label>
-                    <input type="text" autoFocus required placeholder="Enter Age" v-model="age_household_model"/>
+                    <input type="text" autoFocus placeholder="Enter Age" v-model="age_household_model"/>
                     
                     <div v-if="age_household_model < 60">
                         <label>Employment</label>
@@ -86,8 +87,9 @@
                 </div>
 
                 <div class="btnContainer">
-                   <button @click="uploadFile">Register</button>
+                   <input type="submit" value="Register">
                 </div>
+              </form>
             </div>
 
         </section>

@@ -40,7 +40,7 @@
 
                   <p v-if="adminPrive">
                         Have an account?
-                              <span v-on:click="adminPrive = false,  codeFlag = false"  >Sign In </span>
+                              <span v-on:click="adminPrive = false,  codeFlag = false, flag = false"  >Sign In </span>
                   </p>
                 </div>
             </div>
@@ -94,6 +94,7 @@ export default {
             .currentUser.sendEmailVerification()
             .then((user) => {
               alert("Verification Email Sent");
+              this.$router.push('/admin');
             })
             .catch((error) => {
               console.log(error);

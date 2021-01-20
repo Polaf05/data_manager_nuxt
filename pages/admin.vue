@@ -3,8 +3,8 @@
     <b-navbar sticky toggleable="lg" type="dark" variant="dark">
         <b-navbar-brand href="/admin">Resident Data Manager</b-navbar-brand>
         
-        <b-navbar-nav class="ml-auto">
-            <b-button variant="light" @click="signout">Log out</b-button>
+        <b-navbar-nav class="ml-auto nav">
+            <b-button  @click="signout">Log out</b-button>
         </b-navbar-nav>
     </b-navbar>
     
@@ -15,12 +15,23 @@
     <a href="#add" @click="tab = 4">Add Resident</a>
     </div>
     <div class="content">
-      <div v-if="tab == 0"><h1>WELCOME!!</h1></div>
       
-      <Dashb v-if="tab == 1" v-bind:email = "email" />
-      <TableList v-if="tab == 2" v-bind:email = "email" />
-      <Review v-if="tab == 3" v-bind:email = "email" />
-      <Add v-if="tab == 4" v-bind:admin = "email"/>
+      <div class="welcome" v-if="tab == 0">
+        <h1>WELCOME ADMIN!!</h1>
+        <div class="welc"> 
+          <p> Manage your Residents Data </p>
+          <ul>
+            <li>View Dashboard </li>
+            <li>Access List of Residents</li>
+            <li> Review Residents</li>
+            <li> Add or Regster Residents Info </li>
+          </ul>
+          </div>
+      </div>
+      <Dashb class="main-content" v-if="tab == 1" v-bind:email = "email" />
+      <TableList class="main-content"v-if="tab == 2" v-bind:email = "email" />
+      <Review class="main-content" v-if="tab == 3" v-bind:email = "email" />
+      <Add  class="main-content" v-if="tab == 4" v-bind:admin = "email"/>
     </div>
 
 </div>
@@ -73,9 +84,7 @@ export default {
 </script>
 
 <style scope>
-.background{
- background-color: rgb(211,211,211); 
-}
+
 /* The side navigation menu */
 .sidebar {
   margin: 0;
@@ -99,7 +108,7 @@ export default {
 
 /* Active/current link */
 .sidebar a.active {
-  background-color: #4CAF50;
+  background-color: #35495e;
   color: white;
 }
 
@@ -111,13 +120,53 @@ export default {
 
 /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
 div.content {
-  margin-top: 20px;
-  margin-left: 22%;
-  margin-right: 15%;
-  width: 75%;
-  
+
+  margin-top: 0px;
+  margin-left:20%;
+  margin-right:0%;
+  width: 80%;
+
+}
+.welcome{
+  margin-left: 0%;
+  width: 100%;
+  height: 100vh;
+  background-image: url("../assets/images/Welcome-BG.jpg");
+  padding-top: 200px;
 }
 
+.welcome h1{
+  background-color: rgb(220,220,220,0.9);
+  padding-left: 30%;
+ font-weight: bold;
+}
+.welcome p{
+   margin-left: 30%;
+   margin-top: 20px;
+   font-size: 28px;
+    font-weight: bold;
+}
+.welcome ul{
+  font-weight: bold;
+  margin-left: 35%;
+  list-style: none;
+  font-size:20px;
+}
+.welc{
+ 
+  background-color: 	rgb(169,169,169,0.5);
+  
+}
+.main-content{
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.nav button{
+  background-color: #35495e;
+   color: white;
+}
 /* On screens that are less than 700px wide, make the sidebar into a topbar */
 @media screen and (max-width: 700px) {
   .sidebar {

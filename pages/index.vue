@@ -13,14 +13,14 @@
     <b-row class="landing-container"> 
       <b-col cols = "6" class="about">
              <h1> MANAGE RESIDENTS DATA </h1> 
-              <span> EASILY /  EFFICIENTLY / HUSSLE FREE </span> 
+              <span> EASILY /  EFFICIENTLY / HUSTLE FREE </span> 
               <br/><br/> 
       
               <p> We are making your data collection as easy as possible.</p>
               <ul>
-                <li> Instructions </li>
-                <li> Instructions</li>
-                <li>Instructions  </li>
+                <li> Collect Residents Data Online</li> <br/>
+                <li> Filter out Infromation that you need </li>  <br/>
+                <li> Preview Statistics at ease </li>
               </ul>
       </b-col>      
   
@@ -32,14 +32,7 @@
             <br/><span> Register your information online to your Barangay </span> <br/> <br/>
             <b-button class="button-style" variant="light" @click="signin">Register</b-button>
           </b-col>
-
-           <b-col cols = "12" class="reg-container view">
-              <h1> VIEW BARANGAY INFORMATION </h1>
-            <span> View your Barangay informations and Statistics </span> <br/> <br/>
-            <b-button class="button-style" variant="light" > View </b-button>
-          </b-col>
         </b-row>
-      
       </b-col>
     </b-row>
    </b-container> 
@@ -128,26 +121,25 @@ export default {
 }
 
 .reg-container{
-  margin-top: 50px;
+  margin-top: 150px;
   color: white;
   font-size: 15px;
   background-color:  rgba(169,169,169, 0.1);
-  height: 200px;
+  height: 260px;
   padding: 15px;
   max-width: 500px;
 }
-
-.view{
-    height: 210px;
-}
 .reg-container h1{
+  margin-top: 45px;
   font-size: 28px;
   text-align: center;
+  font-weight: bold;
 
 }
 .reg-container span{
-  margin-left: 10px;
+  margin-left: 43px;
   font-size: 15px;
+  
 }
 .about{
   color: white;
@@ -161,16 +153,16 @@ export default {
   font-weight: bold;
 }
 .about span{
-  font-size: 25px;
+  font-size: 23px;
+  margin-left: 50px;
 }
 .about p{
-  text-align: center;
-  font-size: 20px ;
+  font-size: 22px ;
 }
 .about ul{
   list-style: none;
   margin-left: 20px;
-  font-size: 25px;
+  font-size: 20px;
 }
 .landing-container{
   padding: 0px;
