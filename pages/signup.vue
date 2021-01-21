@@ -3,13 +3,13 @@
             <div class="loginContainer">
                 <h1>Online Barangay Registration</h1> 
                 
-                <label>Name</label>
+                <div class="label-form"><label>Name&nbsp;</label><label class="sub-label">(e.g. Juan Dela Cruz)</label></div>
                 <input type="text" autoFocus required placeholder="Enter Name" v-model="name"/>
 
-                <label>Email</label>
+                <div class="label-form"><label>Email&nbsp;</label><label class="sub-label">(e.g. example@example.com)</label></div>
                 <input type="text" autoFocus required placeholder="Enter Email Address" v-model="email"/>
 
-                <label>Address</label>
+                <div class="label-form"><label>Address&nbsp;</label><label class="sub-label">(e.g. Tondo)</label></div>
                 <input type="text" autoFocus required placeholder="Enter Address" v-model="address"/>
 
                 <label>Age</label>
@@ -32,18 +32,20 @@
 
                 <label>Monthly Income</label>
                 <select v-model="income" place>
-                    <option value="Below 15,000">Below 15,000</option>
-                    <option value="15,000 - 30,000">15,000 - 30,000</option>
-                    <option value="30,000 - 50,000">30,000 - 50,000</option>
-                    <option value="50,000 above">50,000 above</option>
+                    <option value="Below 15,000">Below 15,000 Php</option>
+                    <option value="15,000 - 30,000">15,000 - 30,000 Php</option>
+                    <option value="30,000 - 50,000">30,000 - 50,000 Php</option>
+                    <option value="50,000 above">50,000 Php above Php</option>
                 </select>
 
                 <label>Barangay</label>
                 <select v-model="barangay">
-                    <option value="Acacia">Acacia</option>
-                    <option value="San Dionisio">San Dionisio</option>
-                    <option value="793">793</option>
-                    <option value="Balut">Balut</option>
+                    <option value="brgy 101">brgy 101</option>
+                    <option value="brgy 102">brgy 102</option>
+                    <option value="brgy 103">brgy 103</option>
+                    <option value="brgy 104">brgy 104</option>
+                    <option value="brgy 105">brgy 105</option>
+                    
                 </select>
 
                 <div class= 'border'>
@@ -326,6 +328,14 @@ button {
   display: block;
   font-size: 18px;
   line-height: 1;
+}
+
+.label-form{
+  display: flex;
+}
+
+.sub-label{
+  opacity: 50%;
 }
 
 .login .loginContainer input {

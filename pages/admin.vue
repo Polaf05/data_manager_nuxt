@@ -10,7 +10,7 @@
     
     <div class="sidebar">
     <a href="#db" @click="tab = 1">Dashboard</a>
-    <a href="#tb" @click="tab = 2">List of residents</a>
+    <a href="#tb" @click="tab = 2">List of Residents</a>
     <a href="#rev" @click="tab = 3">Review Resident</a>
     <a href="#add" @click="tab = 4">Add Resident</a>
     </div>
@@ -29,7 +29,7 @@
           </div>
       </div>
       <Dashb class="main-content" v-if="tab == 1" v-bind:email = "email" />
-      <TableList class="main-content"v-if="tab == 2" v-bind:email = "email" />
+      <TableList class="main-content" v-if="tab == 2" v-bind:email = "email" />
       <Review class="main-content" v-if="tab == 3" v-bind:email = "email" />
       <Add  class="main-content" v-if="tab == 4" v-bind:admin = "email"/>
     </div>
