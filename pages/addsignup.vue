@@ -14,7 +14,7 @@
                 <input type="text" autoFocus required placeholder="Enter Address" v-model="address"/>
 
                 <label>Age</label>
-                <input type="text" autoFocus required placeholder="Enter Age" v-model="age"/>
+                <input type="text" autoFocus required placeholder="Enter Age" v-model="age" maxlength="2" @keypress="onlyNumber"/>
 
                 <label>Sex</label>
                 <select v-model="sex">
@@ -40,12 +40,13 @@
                 </select>
 
                 <div class= 'border'>
+                <form v-on:submit.prevent="addList">
                 <label>Household Members</label>
                 
-                    <input type="text" autoFocus placeholder="Enter Member" v-model="member_model"/>
+                    <input type="text" autoFocus required placeholder="Enter Member" v-model="member_model"/>
                     
                     <label>Age</label>
-                    <input type="text" autoFocus placeholder="Enter Age" v-model="age_household_model"/>
+                    <input type="text" required placeholder="Enter Age" v-model="age_household_model" maxlength="2" @keypress="onlyNumber"/>
                     
                     <div v-if="age_household_model < 60">
                         <label>Employment</label>
@@ -62,9 +63,9 @@
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>  
                         </select>
-                        <button @click="addList">V</button>
+                        <button>V</button>
                     </div>
-
+                </form>
                     <client-only>
                     <table style="width:100%; margin: .2rem;">
                           <tr>
@@ -83,7 +84,7 @@
                           </tr>
                     </table>
                     </client-only>
-                    
+                
                 </div>
 
                 <div class="btnContainer">
@@ -144,14 +145,6 @@ export default {
                           firebase.firestore().collection('admin').where("barangay","==", this.barangay).get().then(snapshot => {
                               napshot.docs.forEach(docs => {
                                         this.barangay_id = docs.id;
-                                        firebase.firestore().collection("admin").doc(this.barangay_id).update({
-                                            population: firebase.firestore.FieldValue.increment(1)
-                                          }).then(function() {
-                                          console.log("Document successfully updated!");
-                                          })
-                                          .catch(function(error) {
-                                              console.error("Error updating document: ", error);
-                                          });
                                     })
                                 }).catch(function(error) {
                                 console.log("Error getting documents: ", error);
@@ -170,14 +163,7 @@ export default {
                             email:this.email,
                             status: 'approved',
                         })
-                            firebase.firestore().collection("admin").doc(this.barangay_id).update({
-                              population: firebase.firestore.FieldValue.increment(1)
-                            }).then(function() {
-                            console.log("Document successfully updated!");
-                            })
-                            .catch(function(error) {
-                                console.error("Error updating document: ", error);
-                            });
+                            
                          })
 
                             alert("User Registerd");
@@ -213,7 +199,13 @@ export default {
           this.members = this.members.filter(del => del !== member);
           this.employment_household = this.members.filter(del => del !== employment_household);
           this.sex_household = this.members.filter(del => del !== sex);
-        }
+        },
+        onlyNumber ($event) {
+            let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+            if ((keyCode < 48 || keyCode > 57)) {
+                $event.preventDefault();
+          }
+        },
 
         
     },

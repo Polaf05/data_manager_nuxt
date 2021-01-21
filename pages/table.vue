@@ -217,11 +217,11 @@ table {
 }
 td,
 th {
-  border: 1px solid rgb(253, 239, 239);
+  border: 1px solid rgb(151, 151, 151);
   padding: 8px;
   color:rgb(26, 26, 26);
 }
-tr:nth-child(even) {
+tr {
   background-color: #f2f2f2;
 }
 tr:hover {

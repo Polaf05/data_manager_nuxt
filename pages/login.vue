@@ -77,7 +77,6 @@ export default {
           firebase.firestore().collection("admin").add({
                 barangay: this.barangay,
                 email: this.email,
-                population:0,
                 
             })
             .then(function(docRef) {

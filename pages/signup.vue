@@ -7,16 +7,16 @@
                 <input type="text" autoFocus required placeholder="Enter Name" v-model="name"/>
 
                 <div class="label-form"><label>Email&nbsp;</label><label class="sub-label">(e.g. example@example.com)</label></div>
-                <input type="text" autoFocus required placeholder="Enter Email Address" v-model="email"/>
+                <input type="text" required placeholder="Enter Email Address" v-model="email"/>
 
                 <div class="label-form"><label>Address&nbsp;</label><label class="sub-label">(e.g. Tondo)</label></div>
-                <input type="text" autoFocus required placeholder="Enter Address" v-model="address"/>
+                <input type="text" required placeholder="Enter Address" v-model="address"/>
 
                 <label>Age</label>
-                <input type="text" autoFocus required placeholder="Enter Age" v-model="age"/>
+                <input type="text" required placeholder="Enter Age" v-model="age" maxlength = '2' @keypress="onlyNumber"/>
 
                 <label>Sex</label>
-                <select v-model="sex">
+                <select v-model="sex" required>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>  
                 </select>
@@ -31,7 +31,7 @@
                     </div>
 
                 <label>Monthly Income</label>
-                <select v-model="income" place>
+                <select v-model="income" required>
                     <option value="Below 15,000">Below 15,000 Php</option>
                     <option value="15,000 - 30,000">15,000 - 30,000 Php</option>
                     <option value="30,000 - 50,000">30,000 - 50,000 Php</option>
@@ -39,7 +39,7 @@
                 </select>
 
                 <label>Barangay</label>
-                <select v-model="barangay">
+                <select v-model="barangay" required>
                     <option value="brgy 101">brgy 101</option>
                     <option value="brgy 102">brgy 102</option>
                     <option value="brgy 103">brgy 103</option>
@@ -51,10 +51,10 @@
                 <div class= 'border'>
                 <label>Household Members</label>
                 
-                    <input type="text" autoFocus required placeholder="Enter Member" v-model="member_model"/>
+                    <input type="text" required placeholder="Enter Member" v-model="member_model"/>
                     
                     <label>Age</label>
-                    <input type="text" autoFocus required placeholder="Enter Age" v-model="age_household_model"/>
+                    <input type="text" required placeholder="Enter Age" v-model="age_household_model" maxlength = '2' @keypress="onlyNumber"/>
                     
                     <div v-if="age_household_model < 60">
                         <label>Employment</label>
@@ -88,7 +88,7 @@
                           <td>{{employment_household[index]}}</td>
                           <td>{{sex_household[index]}}</td>
                           <td>{{age_household[index]}}</td>
-                          <td><a @click="removeIndex(member, employment_household[index],sex_household[index])" class="hypeLink">Remove</a></td>
+                          <td><a @click="removeIndex(member, employment_household[index],sex_household[index],age_household[index])" class="hypeLink">Remove</a></td>
                           </tr>
                     </table>
                     </client-only>
@@ -152,22 +152,6 @@ export default {
                         })
                         .then((docRef) => {
 
-                          firebase.firestore().collection('admin').where("barangay","==", this.barangay).get().then(snapshot => {
-                              napshot.docs.forEach(docs => {
-                                        this.barangay_id = docs.id;
-                                        firebase.firestore().collection("admin").doc(this.barangay_id).update({
-                                            population: firebase.firestore.FieldValue.increment(1)
-                                          }).then(function() {
-                                          console.log("Document successfully updated!");
-                                          })
-                                          .catch(function(error) {
-                                              console.error("Error updating document: ", error);
-                                          });
-                                    })
-                                }).catch(function(error) {
-                                console.log("Error getting documents: ", error);
-                            }); 
-
                          this.members.forEach((docs,index) => {
                            firebase.firestore().collection("members").add({
                             name: this.members[index],
@@ -181,14 +165,7 @@ export default {
                             email:this.email,
                             status: 'pending',
                         })
-                            firebase.firestore().collection("admin").doc(this.barangay_id).update({
-                              population: firebase.firestore.FieldValue.increment(1)
-                            }).then(function() {
-                            console.log("Document successfully updated!");
-                            })
-                            .catch(function(error) {
-                                console.error("Error updating document: ", error);
-                            });
+                          
                          })
 
                             alert('Thank you for Registering! We will now review your identification!');
@@ -229,7 +206,15 @@ export default {
           this.members = this.members.filter(del => del !== member);
           this.employment_household = this.members.filter(del => del !== employment_household);
           this.sex_household = this.members.filter(del => del !== sex);
-        }
+          this.age_household = this.members.filter(del => del !== age);
+        },
+
+        onlyNumber ($event) {
+            let keyCode = ($event.keyCode ? $event.keyCode : $event.which);
+            if ((keyCode < 48 || keyCode > 57)) {
+                $event.preventDefault();
+          }
+        },
 
         
     },
